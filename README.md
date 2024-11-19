@@ -10,6 +10,19 @@ Features
 
 Getting Started
 
+backend/
+├── server.js (or index.js)
+├── routes/
+│   └── registration.js
+├── models/
+│   └── Registration.js
+├── controllers/
+│   └── registrationController.js
+├── config/
+│   └── db.js
+└── package.json
+
+
 Prerequisites
 - Node.js
 - MongoDB (local or MongoDB Atlas)
