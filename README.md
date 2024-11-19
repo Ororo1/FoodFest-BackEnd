@@ -16,3 +16,10 @@ Prerequisites
 
 Installation
 1. Clone the repository: git clone https://github.com/Ororo1/FoodFest-Backend.git cd FoodFest-Backend
+2. Install dependencies: npm install
+3. Run the server: npm start
+
+API Endpoint
+-POST /api/register: Register a user.
+
+
