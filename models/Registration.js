@@ -1,12 +1,21 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-const registrationSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  phone: { type: String },
-  role: { type: String, enum: ['vendor', 'foodfest-er'], required: true },
-  attendance: { type: [String], enum: ['alone', 'plus-one', 'kids'], required: true },
-  kidsCount: { type: Number, default: 0 },
-}, { timestamps: true });
+  phone: { type: String, required: true },
+  role: { type: String, enum: ['Vendor', 'Foodfest-er'], required: true },
+  preferences: { type: [String], required: true }, // Example: ['coming with kids', 'coming alone']
+  kids: { type: Number, default: 0 }, // Number of kids, if applicable
+  password: { type: String, required: true }
+});
 
-module.exports = mongoose.model('Registration', registrationSchema);
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+module.exports = mongoose.model('User', userSchema);
