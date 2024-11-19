@@ -10,7 +10,7 @@ Features
 
 Getting Started
 
-backend/
+FoodFest-BackEnd/
 ├── server.js (or index.js)
 ├── routes/
 │   └── registration.js
