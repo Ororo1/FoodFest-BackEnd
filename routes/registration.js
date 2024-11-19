@@ -1,23 +1,27 @@
 const express = require('express');
+const User = require('../models/User');
 const router = express.Router();
-const Registration = require('../models/Registration');
 
-// POST route to register user
-router.post('/', async (req, res) => {
-  const { name, email, phone, role, attendance, kidsCount } = req.body;
+router.post('/register', async (req, res) => {
+  const { name, email, phone, role, preferences, kids, password } = req.body;
 
-  if (!name || !email || !role || !attendance) {
-    return res.status(400).json({ message: 'Missing required fields' });
+  if (!name || !email || !phone || !role || !preferences || !password) {
+    return res.status(400).json({ message: 'All fields are required.' });
   }
 
   try {
-    // Create new registration
-    const registration = new Registration({ name, email, phone, role, attendance, kidsCount });
-    await registration.save();
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email already registered.' });
+    }
 
-    res.status(201).json({ message: 'Registration successful', registration });
+    const user = new User({ name, email, phone, role, preferences, kids, password });
+    await user.save();
+
+    res.status(201).json({ message: 'User registered successfully.' });
   } catch (error) {
-    res.status(500).json({ message: 'Error saving registration', error });
+    console.error(error);
+    res.status(500).json({ message: 'Server error.' });
   }
 });
 
